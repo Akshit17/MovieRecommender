@@ -135,3 +135,9 @@ print(ml_25_movies.shape)
 ml_25_movies = ml_25_movies.rename(columns={"imdbId":"imdb_id" , "tmdbId":"tmdb_id"})
 
 ml_25_movies.to_csv('ml_25_movies.csv', index = False)
+
+# ml_25_movies.csv is missing few columns like 'overview' , 'cast', 'crew' when compared with movies_metadata.csv 
+
+import imdb
+
+moviesDB = imdb.IMDb()
