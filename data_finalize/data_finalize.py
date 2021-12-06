@@ -105,3 +105,33 @@ movies_metadata = movies_metadata.rename(columns={"id":"tmdb_id"})
 
 
 movies_metadata.to_csv('movies_metadata.csv', index = False)
+
+
+#TO-DO: From ml-25m dataset replace movieid with corresponding tmbd/imbd id
+
+ml_25_movies = ml_25_movies.merge(ml_25_links , on="movieId")
+print(type(ml_25_movies.iloc[0].genres))
+
+print(ml_25_movies.iloc[0].genres)
+
+def convert_ml_25m(obj):
+    L = []
+    print(obj)
+    if obj == "(no genres listed)":          # Null values are listed in data in this format
+        obj = None
+    else:
+        # print(type(obj))
+        obj = obj.split('|')
+        # print(obj)
+    return obj
+    
+ml_25_movies['genres'] = ml_25_movies['genres'].apply(convert_ml_25m)
+print(ml_25_movies)
+
+ml_25_movies = ml_25_movies.dropna(subset=['genres'])    # Movie data with no genre is probably useless to train model over
+print(type(ml_25_movies.iloc[0].genres))
+print(ml_25_movies.shape)
+
+ml_25_movies = ml_25_movies.rename(columns={"imdbId":"imdb_id" , "tmdbId":"tmdb_id"})
+
+ml_25_movies.to_csv('ml_25_movies.csv', index = False)
