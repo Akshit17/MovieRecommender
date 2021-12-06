@@ -45,19 +45,52 @@ print(movies_metadata.iloc[0].genres)
 movies_metadata.shape
 movies_metadata.duplicated().sum()      #gave 13
 
+
+
 movies_metadata = movies_metadata.sort_values(by="id")
 print(type(movies_metadata['id'][0]))
-
 #to merge the keywords.csv and movie_metadata.csv the id datatype should be same
-for row in movies_metadata.iterrows:
-    try:
-        row['id'] = np.int64(row['id'])
-    except:
-        print("BEEP BOP")
-        print(row['id'])
-try:
-    pd.to_numeric(movies_metadata.id)
-except:
-    movies_metadata = movies_metadata[movies_metadata.id!='1997-08-20']       #an exceptionally wrong id found manually in dataset
- 
-movies_metadata.head(10)
+
+# for row in movies_metadata.iterrows:
+#     try:
+#         row['id'] = np.int64(row['id'])
+#     except:
+#         print("BEEP BOP")
+#         print(row['id'])
+# try:
+#     pd.to_numeric(movies_metadata.id)
+# except:
+#     movies_metadata = movies_metadata[movies_metadata.id!='1997-08-20']
+# movies_metadata.head(4)
+
+keywords = keywords.sort_values(by="id")
+keywords['id'] = keywords['id'].astype(str)
+# print(type(keywords['id'][0]))
+# pd.to_numeric(keywords.id)
+# keywords.head(4)
+
+# movies_metadata = pd.concat([movies_metadata, keywords], axis=1)
+movies_metadata = movies_metadata.merge(keywords , on="id")
+# movies_metadata.head(10)
+movies_metadata['genres'] = movies_metadata['genres'].apply(convert)
+movies_metadata['keywords'] = movies_metadata['keywords'].apply(convert)
+movies_metadata['production_companies'] = movies_metadata['production_companies'].apply(convert)
+print(movies_metadata.head(10))
+
+
+# movies_metadata.shape
+credits = credits.sort_values(by="id")
+credits['id'] = credits['id'].astype(str)
+
+
+# movies_metadata = pd.concat([movies_metadata, credits], axis=1)
+movies_metadata = movies_metadata.merge(credits , on="id")
+
+print(movies_metadata.shape)
+
+# movies_metadata.info()
+print(movies_metadata['id'].value_counts())
+print(movies_metadata["id"].nunique())
+#handling duplicated data
+
+print(movies_metadata[movies_metadata["id"].duplicated()])  #prints rows with duplicated attribute 'id'
