@@ -94,3 +94,14 @@ print(movies_metadata["id"].nunique())
 #handling duplicated data
 
 print(movies_metadata[movies_metadata["id"].duplicated()])  #prints rows with duplicated attribute 'id'
+
+movies_metadata = movies_metadata.drop_duplicates(subset=["id"] ,keep="first")
+print(movies_metadata[movies_metadata["id"].duplicated()])
+# movies_metadata["id"].nunique()   45432 unique which is equal to shp so all gud
+
+movies_metadata = movies_metadata[["title","genres","imdb_id","id", "original_language",  "overview", "popularity" ,"poster_path", "production_companies", "production_countries" , "release_date", "revenue", "spoken_languages", "title", "video", "vote_average" , "vote_count" , "keywords" , "cast", "crew"]]
+
+movies_metadata = movies_metadata.rename(columns={"id":"tmdb_id"})
+
+
+movies_metadata.to_csv('movies_metadata.csv', index = False)
