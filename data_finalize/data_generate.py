@@ -2,6 +2,9 @@ import imdb
 import pandas as pd
 import ast
 
+# https://stackoverflow.com/questions/54934012/getting-10-000-movie-plots-with-imdbpy      
+# Press F to pay respect 
+
 moviesDB = imdb.IMDb()
 
 # print(dir(moviesDB))       #prints all the functions/methods in this lib
@@ -49,27 +52,33 @@ for mobie in mobiee:
     
 overview = []
 id_list = ml_25_movies['imdb_id'].to_list()
+title_list = ml_25_movies['title'].to_list()
 
 # for i in range(0 , 5):                   #if length of imdb_id is less than 7 then add zeroes in prefix
 #     id = str(ml_25_movies['imdb_id'][i])
-for index , id in enumerate(id_list):
+for index , id in enumerate(ml_25_movies["imdb_id"].iteritems()):
+    # print(index)
+    print(id)
     id = str(id)
     if len(id) < 7:
         id = '0' + id
-    movie = moviesDB.get_movie(id)
+    movie = moviesDB.get_movie_plot(id)
+    print(type(movie))
     # print(movie.keys())                      #gives attributes that can be used
     # print(movie['cast'])                       # ['rating'] year and title too 
     # print(movie['directors'])
-    # print(movie['plot'])                       #ends weirdly with  '::<something@gmail.com>' or '::somename'
+    #print(movie)                       #ends weirdly with  '::<something@gmail.com>' or '::somename'
     # print(movie['plot outline'])
     try:
+        # print(index)
         overview.append(movie['plot'])                  #gives error for some movies
     except:
         print(index)
         print(ml_25_movies['title'][index])        
-    if index % 1000 == 0:
-        print("One batch Komplet") 
+    # if index % 1000 == 0:
+    #     print("One batch Komplet") 
 ml_25_movies["overview"] = pd.Series(overview)     #adding overview column to dataframe
+ml_25_movies.to_csv('generated_ml_25_movies.csv', index = False)
 print(ml_25_movies.head(10))
 
 
