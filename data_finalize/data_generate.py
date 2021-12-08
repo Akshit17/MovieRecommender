@@ -35,22 +35,42 @@ moviesDB = imdb.IMDb()
 #  'update', 'update_series_seasons', 'urlOpener', 'urls']
 
 ml_25_movies= pd.read_csv("./ml_25_movies.csv")
+print(ml_25_movies.head(10))
 
 '''mobiee = moviesDB.search_movie('Toy Story (1995)')
-print(mobiee[0].keys())
+print(mobiee[0].getID())
 for mobie in mobiee:
     # print(type(mobie))
     print(mobie.keys)
     print(mobie['title'])
     print(mobie['year'])'''
 
-for id in ml_25_movies['imdb_id']:
+# print(ml_25_movies['imdb_id'][0])
+    
+overview = []
+id_list = ml_25_movies['imdb_id'].to_list()
+
+# for i in range(0 , 5):                   #if length of imdb_id is less than 7 then add zeroes in prefix
+#     id = str(ml_25_movies['imdb_id'][i])
+for index , id in enumerate(id_list):
+    id = str(id)
+    if len(id) < 7:
+        id = '0' + id
     movie = moviesDB.get_movie(id)
     # print(movie.keys())                      #gives attributes that can be used
     # print(movie['cast'])                       # ['rating'] year and title too 
     # print(movie['directors'])
-    # print(movie['plot'])
-    print(movie['plot outline'])
+    # print(movie['plot'])                       #ends weirdly with  '::<something@gmail.com>' or '::somename'
+    # print(movie['plot outline'])
+    try:
+        overview.append(movie['plot'])                  #gives error for some movies
+    except:
+        print(index)
+        print(ml_25_movies['title'][index])        
+    if index % 1000 == 0:
+        print("One batch Komplet") 
+ml_25_movies["overview"] = pd.Series(overview)     #adding overview column to dataframe
+print(ml_25_movies.head(10))
 
 
 # ['localized title', 'cast', 'genres', 'runtimes', 'countries', 'country codes', 'language codes', 'color info', 'aspect ratio',
@@ -62,7 +82,8 @@ for id in ml_25_movies['imdb_id']:
 # 'stunts', 'camera department', 'casting department', 'costume departmen', 'location management', 'music department', 
 # 'script department', 'transportation 
 #department', 'miscellaneous', 'thanks', 'akas', 'writer', 'director', 'production companies',
-#  'distributors', 'special effects companies', 'other companies', 'plot', 'synopsis', 'canonical title', 
+#  'distributors', 'special effects companies', 'other companies', 
+# 'plot', 'synopsis', 'canonical title', 
 # 'long imdb title', 'long imdb canonical title', 'smart canonical title', 'smart long imdb canonical title', 
 # 'full-size cover url']
  
