@@ -1,3 +1,5 @@
+import sys
+import os
 import csv
 from jina import Document, DocumentArray, DocumentArrayMemmap
 
@@ -9,7 +11,7 @@ from jina import Document, DocumentArray, DocumentArrayMemmap
 # da = DocumentArray.load_csv("./movies_metadata.csv", encoding="utf8")
 #gives error with encoding .  No attribute named 'encoding' either to specify encoding or to use utf8
 
-
+docs = DocumentArray()
 
 with open("movies_metadata.csv", encoding="utf-8") as file:
     #setup csv reader
@@ -21,9 +23,11 @@ with open("movies_metadata.csv", encoding="utf-8") as file:
         # print(row.keys())
         #append each row to the list
         movies.append(row['title'])
-    print(movies)
+    # print(movies)
+
     da = DocumentArray.from_csv(file)
 
+da.plot()
 
 # print(da[])
 print(da[2].tags)
