@@ -1,11 +1,20 @@
 import imdb
+# from numba.core import target_extension
 import pandas as pd
+import numpy as np
 import ast
+# from numba import jit, cuda
+import multiprocessing 
+
+
+# import dask.dataframe as ddf
+# import code
+# code.interact(local=locals)
 
 # https://stackoverflow.com/questions/54934012/getting-10-000-movie-plots-with-imdbpy      
 # Press F to pay respect 
 
-moviesDB = imdb.IMDb()
+# moviesDB = imdb.IMDb()
 
 # print(dir(moviesDB))       #prints all the functions/methods in this lib
 
@@ -37,8 +46,29 @@ moviesDB = imdb.IMDb()
 #  'set_imdb_urls', 'set_proxy', 'set_timeout', 'skProxy', 'smProxy', 'smaProxy', 'spProxy', 'title2imdbID', 'topBottomProxy',
 #  'update', 'update_series_seasons', 'urlOpener', 'urls']
 
-ml_25_movies= pd.read_csv("./ml_25_movies.csv")
-print(ml_25_movies.head(10))
+# ml_25_movies= pd.read_csv("generated_ml_25_movies.csv")
+# # ml_25_movies = pd.read_csv("ml_25_movies.csv")
+# # ml_25_movies["overview"] =  np.nan  
+# # print(type(ml_25_movies['cast'][35000]))
+# # ml_25_movies["cast"] =  np.nan  
+# ml_25_movies["keywords"] =  np.nan  
+
+
+# # create as many processes as there are CPUs on your machine
+# num_processes = multiprocessing.cpu_count()
+# # create our pool with `num_processes` processes
+# pool = multiprocessing.Pool(processes=num_processes)
+
+
+# # calculate the chunk size as an integer
+# chunk_size = int(ml_25_movies.shape[0]/num_processes)
+
+# # this solution was reworked from the above link.
+# # will work even if the length of the dataframe is not evenly divisible by num_processes
+# chunks = [ml_25_movies.loc[ml_25_movies.index[i:i + chunk_size]] for i in range(0, ml_25_movies.shape[0], chunk_size)]
+
+
+# print(ml_25_movies.head(10))
 
 '''mobiee = moviesDB.search_movie('Toy Story (1995)')
 print(mobiee[0].getID())
@@ -50,40 +80,150 @@ for mobie in mobiee:
 
 # print(ml_25_movies['imdb_id'][0])
     
-overview = []
-id_list = ml_25_movies['imdb_id'].to_list()
-title_list = ml_25_movies['title'].to_list()
+# overview = []
+# id_list = ml_25_movies['imdb_id'].to_list()
+# title_list = ml_25_movies['title'].to_list()
 
-# for i in range(0 , 5):                   #if length of imdb_id is less than 7 then add zeroes in prefix
+# for i in range(0 , 5):                   #if length of imdb_id is less than 7 then add zeroes in prefloc
 #     id = str(ml_25_movies['imdb_id'][i])
-for index , id in enumerate(ml_25_movies["imdb_id"].iteritems()):
-    # print(index)
-    print(id)
-    id = str(id)
-    if len(id) < 7:
-        id = '0' + id
-    movie = moviesDB.get_movie_plot(id)
-    print(type(movie))
-    # print(movie.keys())                      #gives attributes that can be used
-    # print(movie['cast'])                       # ['rating'] year and title too 
-    # print(movie['directors'])
-    #print(movie)                       #ends weirdly with  '::<something@gmail.com>' or '::somename'
-    # print(movie['plot outline'])
-    try:
-        # print(index)
-        overview.append(movie['plot'])                  #gives error for some movies
-    except:
-        print(index)
-        print(ml_25_movies['title'][index])        
-    # if index % 1000 == 0:
-    #     print("One batch Komplet") 
-ml_25_movies["overview"] = pd.Series(overview)     #adding overview column to dataframe
-ml_25_movies.to_csv('generated_ml_25_movies.csv', index = False)
-print(ml_25_movies.head(10))
+# for index , id in enumerate(ml_25_movies["imdb_id"].iteritems()):
+#     # print(index)
+
+# @cuda.jit(target='cuda')
+def gen_shi(ml_25_movies):
+    print(type(ml_25_movies))
+    for index , id in ml_25_movies.iterrows():
+        if(type(ml_25_movies["cast"][index]) == float):
+            # print(id)
+            id = str(id['imdb_id'])
+            if len(id) < 7:
+                id = '0' + id
+            movie = moviesDB.get_movie(id)
+            # print(type(movie))
+            # print(movie.keys())                      #gives attributes that can be used
+            # print(movie['cast'])                      # ['rating'] year and title too 
+            # print(movie['directors'])
+            #print(movie)                              #ends weirdly with  '::<something@gmail.com>' or '::somename'
+            # print(movie['plot outline'])
+
+            # try: 
+            #     # print(index)
+            #     overview.append(movie['plot'])                  #gives error for some movies
+            # except:
+            #     print(index)
+            #     print(ml_25_movies['title'][index])        
+            try:
+                # print(movie['plot'])
+                print("added plo/cas")
+                ml_25_movies.iat[index, 5] = movie['plot']
+                ml_25_movies.iat[index, 6] = movie['cast']
+            except:
+                # print(id)
+                ml_25_movies.drop(index)
+                # ml_25_movies.drop(index, inplace=True)
+
+            movie = moviesDB.get_movie(id, info=['keywords'])
+            try:
+                print("added keybord")
+                # print(movie['keywords'])
+                ml_25_movies.iat[index, 7] = movie['keywords']
+            except:
+                # print(id)
+                ml_25_movies.drop(index)
+                # ml_25_movies.drop(index, inplace=True)
+
+            
+            # if index % 1000 == 0:
+            #     print(id)
+            #     print("One batch Komplet") 
+
+            # # ml_25_movies["overview"] = pd.Series(overview)     #adding overview column to dataframe
+            # # ml_25_movies.to_csv('generated_ml_25_movies.csv', index = False)
+
+            # ml_25_movies.to_csv('dask_generated_ml_25_movies.csv', index = False)
+
+            # print(ml_25_movies)
+    print(ml_25_movies)
+    return ml_25_movies
+
+def main():
+     # apply our function to each chunk in the list
+    result = pool.map(gen_shi, chunks)
+
+    # for i in range(len(result)):
+    #     # since result[i] is just a dataframe
+    #     # we can reassign the original dataframe based on the index of each chunk
+    #     ml_25_movies.loc[result[i].index] = result[i]
+    ml_25_movies = pd.concat(result)
+    # print(result)
+
+    ml_25_movies.to_csv('mp_generated_ml_25_movies.csv', index = False)
+    # print(ml_25_movies)
+
+
+    pool.close()
+    pool.join()
+
+moviesDB = imdb.IMDb()
+if __name__ == '__main__': 
+    multiprocessing.freeze_support()
+    
+    # moviesDB = imdb.IMDb()
+    # ml_25_movies= pd.read_csv("generated_ml_25_movies.csv")
+    ml_25_movies= pd.read_csv("mp_generated_ml_25_movies.csv")
+    # ml_25_movies["overview"] =  np.nan 
+    # ml_25_movies["cast"] =  np.nan 
+    # ml_25_movies["keywords"] =  np.nan  
+    print(type(ml_25_movies['overview'][1]))
+    print(type(ml_25_movies['cast'][1]))
+    print(type(ml_25_movies['keywords'][1]))
+
+    # create as many processes as there are CPUs on your machine
+    num_processes = multiprocessing.cpu_count() - 1
+    # create our pool with `num_processes` processes
+    pool = multiprocessing.Pool(processes=num_processes)
+
+    # calculate the chunk size as an integer
+    chunk_size = int(ml_25_movies.shape[0]/num_processes)
+
+    # this solution was reworked from the above link.
+    # will work even if the length of the dataframe is not evenly divisible by num_processes
+    chunks = [ml_25_movies.loc[ml_25_movies.index[i:i + chunk_size]] for i in range(0, ml_25_movies.shape[0], chunk_size)]
+    # print(chunks)
+
+
+    main()
+
+#     # gen_shi(moviesDB, ml_25_movies)
+
+#     # df_dask = ddf.from_pandas(ml_25_movies, npartitions=6)
+#     # new_df = df_dask.map_partitions(gen_shi, moviesDB).compute(scheduler='processes')
+
+
+# print(moviesDB.get_movie_infoset())
+
+# movie = moviesDB.get_movie("0113497", info=['plot', 'cast', 'keywords'])
+# movie = moviesDB.get_movie("0114709")
+# print(movie.items())
+# print(movie.get('keywords'))
+# print(movie.infoset2keys)
+
+# print(movie['keywords'])
+# cast = movie.get('cast')
+
+# actor = movie['cast'][0]
+# print(actor)
+# print(actor.currentRole)
+
+# movie = moviesDB.get_movie("0114709", info=['plot'])
+# print(movie['keywords'])
+# print(movie['plot'])
+
+# print(ml_25_movies.head(10))
 
 
 # ['localized title', 'cast', 'genres', 'runtimes', 'countries', 'country codes', 'language codes', 'color info', 'aspect ratio',
-#  'sound mix', 'box office', 'certificates', 'original air date', 'rating', 'votes', 'cover url', 'imdbID', 
+#  'sound mloc', 'box office', 'certificates', 'original air date', 'rating', 'votes', 'cover url', 'imdbID', 
 # 'plot outline',
 #  'languages', 'title', 'year', 'kind', 'directors', 'writers', 'producers', 'composers', 'cinematographers', 'editors', 
 # 'editorial department', 'casting directors', 'production designers', 'art directors', 'set decorators', 'costume designers', 'make up department', 
