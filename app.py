@@ -3,7 +3,7 @@ import os
 import ast
 import csv
 from jina import Document, DocumentArray, DocumentArrayMemmap
-from jina import Flow
+from jina import Flow, Executor
 
 
 # da = DocumentArray.load_csv("./movies_metadata.csv")
@@ -64,12 +64,16 @@ if __name__ == "__main__":
             uses_with={"pretrained_model_name_or_path": model},
             install_requirements = True
         )
+        # .add(
+        #     name="Text_Indexer",
+        #     uses='jinahub://SimpleIndexer',
+        #     uses_metas={'workspace': '/indexing/tmp_folder'},
+        #     install_requirements = True
+        # )
         .add(
-            name="Text_Indexer",
-            uses='jinahub://SimpleIndexer',
-            uses_metas={'workspace': '/indexing/tmp_folder'},
+            uses='jinahub+docker://CLIPTextEncoder/',
             install_requirements = True
-        )
+            )
     )
 
     print(flow)
@@ -82,8 +86,8 @@ if __name__ == "__main__":
     with flow:
         flow.index(
         inputs=docs,
-            docs = docs,
-            parameters = {'name' : 'something', 'xyz' : 'fsdfsdfsa'}
+        docs = docs,
+        parameters = {'name' : 'something', 'xyz' : 'fsdfsdfsa'}
     )
 
     query = Document(text = input('Query song : '))
