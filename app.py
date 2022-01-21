@@ -15,13 +15,14 @@ from helper import SimpleIndexer, TextEncoder
 
 docs = DocumentArray()
 
-with open("./data_finalize/movies_metadata.csv", encoding="utf-8") as file:
+# with open("./data_finalize/movies_metadata.csv", encoding="utf-8") as file:
+with open("./data_finalize/lite_movies_metadata.csv", encoding="utf-8") as file:      # Complete dataset taking too much time to get indexed
     #setup csv reader
     reader = csv.DictReader(file)
     #setup list to hold dictionaries
     movies = []
     #loop through each row in the csv
-    for row in reader:
+    for indx, row in enumerate(reader):
         # print(row.keys())
         #append each row to the list
         movies.append(row['overview'])
@@ -32,12 +33,12 @@ with open("./data_finalize/movies_metadata.csv", encoding="utf-8") as file:
         # da.tags['cast'] = ast.literal_eval(row['cast'])
         # da.tags['keywords'] = ast.literal_eval(row['keywords'])
         docs.append(da)
-
+        # print(indx)
     # print(da.text)
 
     da.plot('document.svg')
 
-# print(docs[0].json())
+print(docs[0].json())
 # for d in docs:
 #     d.plot()
 
@@ -79,6 +80,7 @@ if __name__ == "__main__":
     # )
 
     # "en_core_web_md"
+    print(docs[0].json())
     flow = (
         Flow()
         # .add(
@@ -96,11 +98,13 @@ if __name__ == "__main__":
         .add(
         name='text_encoder',
         uses=TextEncoder,
-        uses_with={'parameters': {'traversal_paths': 'r'}},       #changed c to r
+        # uses_with={'parameters': {'traversal_paths': 'r'}},       #changed c to r
         )
         .add(
             name='simple_indexer',
             uses=SimpleIndexer,
+            uses_metas={"workspace": "workspace/indexing"},
+            # volumes="./workspace:/workspace/indexing",
         )
     )   
 
@@ -124,19 +128,24 @@ if __name__ == "__main__":
     query_flow = (
         Flow()
         # Create vector representations from query
-        .add(name='query_transformer', uses=TextEncoder,)
+        .add(name='query_transformer', uses=TextEncoder)
         # Use encoded question to search our index
         .add(
             name='simple_indexer',
-            uses=SimpleIndexer,
+            uses=SimpleIndexer
+            # uses_metas={"workspace": "./workspace/indexing"},
         )
     )
 
 
     query = Document(text = input('Query movie: '))
-    with query_flow:
-        # query = Document(text = input('Query movie : '))
-        response = query_flow.post(on='/search', inputs = query, return_results = True)
+    # with query_flow:
+    #     # query = Document(text = input('Query movie : '))
+
+    #     response = query_flow.post(on='/search', inputs = query, return_results = True)
+        
+    with flow:    
+        response = flow.post(on='/search', inputs = query, return_results = True)
 
     matches = response[0].docs[0].matches
     

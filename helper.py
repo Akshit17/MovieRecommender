@@ -28,7 +28,7 @@ class SimpleIndexer(Executor):
             DocumentArray(self._docs),
             metric='cosine',
             normalization=(1, 0),
-            limit=100,
+            limit=10,
             exclude_self=True,               #added Manually 
             traversal_rdarray='r,',
             # traversal_rdarray='c,',         #says traversal_rdarray is deprecated
@@ -68,22 +68,26 @@ class TextEncoder(Executor):
         super().__init__(*args, **kwargs)
         self.model = SentenceTransformer(
             # 'multi-qa-MiniLM-L6-cos-v1', device='cuda', cache_folder='.'
-            'multi-qa-MiniLM-L6-cos-v1', device='cpu', cache_folder='.'
+            # 'multi-qa-MiniLM-L6-cos-v1', device='cpu', cache_folder='.'
+            'all-MiniLM-L6-v2', device='cpu', cache_folder='.'
         )
         self.parameters = parameters
-        model = SentenceTransformer('')
+        # model = SentenceTransformer('')
 
     @requests(on=['/search', '/index'])
     def encode(self, docs: DocumentArray, **kwargs):
         """Wraps encoder from sentence-transformers package"""
+        print("BEHOLD!!!! I AM EMBEDDING !!!!")
         traversal_paths = self.parameters.get('traversal_paths')
         target = docs.traverse_flat(traversal_paths)
         
-        count = 0
-        for i in target:
-            count = count + 1
-        print("elems in target are: {}".format(count))
+        # count = 0
+        # for i in target:
+        #     count = count + 1             
+        # print("elems in target are: {}".format(count))
+
         with torch.inference_mode():
+            # print(target.texts)                           #gave none when travesal_path set to c
             embeddings = self.model.encode(target.texts)
-            print(embeddings.shape)             # gives (1 , 384) ??
+            # print(embeddings.shape)             # gives (1 , 384) ??    now gives (100, 384)
             target.embeddings = embeddings
