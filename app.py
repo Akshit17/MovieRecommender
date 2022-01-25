@@ -47,7 +47,7 @@ def index():
             mid.append(recom_list.iloc[i][5])
     suggestions =   get_suggestions()      #get_suggestions
     
-    return render_template('index.html',suggestions=suggestions,movie_type=types[5:],movieid=mid,movie_overview=overview,movie_names=names,movie_date=dates,movie_ratings=ratings,search_name=m_name)
+    return render_template('index.html',suggestions=suggestions,movie_type=types[5:],movieid=mid,movie_overview=overview,movie_names=names,movie_date=dates,movie_ratings=ratings,search_name=movie_query)
 
 # Set up the main route
 @app.route('/positive', methods=['GET', 'POST'])
