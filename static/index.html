@@ -3,25 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <title>Movie Recommender</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/css/autoComplete.min.css">
+    
+    <!-- <script type="text/javascript">
+      var films = {{suggestions|tojson}};
+    </script> -->
 
 </head>
+
+
 <body>
+  <header>
+  <h1>Movie <span>Recommender</h1>
+  </header>
 
-<header>
-<h1>Movie <span>Recommender</h1>
-
-</header>
-<center><div class="wrap" >
-   <div>
-   <form class="search" action="{{ url_for('main') }}"  method="POST">
-       <input type="text" class="searchTerm" id="autoComplete" autocomplete="off" name="movie_name" placeholder="Enter a full movie name">
-       <button class="searchButton" type="submit"  value="Submit">
-       </button>
-   </form>
-    <br>
- </div></center>
-
-</div>
-
+  <center><div class="wrap" >
+    <div>
+    <form class="search" action="{{ url_for('main') }}"  method="POST">
+        <input type="text" class="searchTerm" id="autoComplete" autocomplete="off" name="movie_name" placeholder="Enter a full movie name">
+        <button class="searchButton" type="submit"  value="Submit">
+        </button>
+    </form>
+      <br>
+  </div></center>
+  
 </body>
 </html>

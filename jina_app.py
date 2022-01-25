@@ -26,7 +26,7 @@ def gen_docarray():
 
 def indexnsearch(docs, query):
     flow = (
-        Flow()
+        Flow(cors=True)
         .add(
         name='text_encoder',
         uses=TextEncoder,
@@ -45,6 +45,8 @@ def indexnsearch(docs, query):
     
     with flow:    
         response = flow.post(on='/search', inputs = query, return_results = True)
+    
+    print("{} IS THE RESPONSE !!!".format(response))
     matches = response[0].docs[0].matches
 
     for ind, i in enumerate(matches):
@@ -53,9 +55,9 @@ def indexnsearch(docs, query):
 
 
 
-def query_results(query):
+def query_results(docs, query):
     flow = (
-        Flow()
+        Flow(cors=True)
         .add(
         name='text_encoder',
         uses=TextEncoder,
@@ -69,11 +71,16 @@ def query_results(query):
     )   
 
     flow.plot('flow.svg')
+
+    with flow:
+        flow.post(on='/index', inputs=docs, on_done=print)
+
     with flow:    
         response = flow.post(on='/search', inputs = query, return_results = True)
     
     recommended_movies = []
-    matches = response[0].docs[0].matches
+    print("{} IS THE RESPONSE !!!".format(response))
+    matches = response[0].data.docs[0].matches
 
     for ind, i in enumerate(matches):
         print(f' Movie Title :  {i.tags["title"]} '.center(60,'='))
@@ -88,4 +95,6 @@ def query_results(query):
 if __name__ == "__main__":
     docs = gen_docarray()
     query = Document(text = input('Query movie: '))
-    indexnsearch(docs, query)
+    # indexnsearch(docs, query)
+
+    query_results(docs, query)
