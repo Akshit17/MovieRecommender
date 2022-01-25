@@ -1,156 +1,88 @@
-import sys
-import os
-import ast
+import flask
+from flask import Flask, render_template, request
 import csv
-from jina import Document, DocumentArray, DocumentArrayMemmap
-from jina import Flow, Executor
-from helper import SimpleIndexer, TextEncoder
+import pandas as pd
 
-# da = DocumentArray.load_csv("./movies_metadata.csv")
-#UnicodeDecodeError: 'charmap' codec can't decode byte 0x9d in position 455: character maps to <undefined>
+import jina_app
 
+def get_suggestions():
+    data = pd.read_csv('./data_finalize/movies_metadata.csv.csv')
+    return list(data['title'].str.capitalize())
 
-# da = DocumentArray.load_csv("./movies_metadata.csv", encoding="utf8")
-#gives error with encoding .  No attribute named 'encoding' either to specify encoding or to use utf8
-
-docs = DocumentArray()
-
-# with open("./data_finalize/movies_metadata.csv", encoding="utf-8") as file:
-with open("./data_finalize/lite_movies_metadata.csv", encoding="utf-8") as file:      # Complete dataset taking too much time to get indexed
-    #setup csv reader
-    reader = csv.DictReader(file)
-    #setup list to hold dictionaries
-    movies = []
-    #loop through each row in the csv
-    for indx, row in enumerate(reader):
-        # print(row.keys())
-        #append each row to the list
-        movies.append(row['overview'])
-        da = Document(text=row['overview']) #tags=ast.literal_eval(row['cast'])
-        da.tags['genres'] = ast.literal_eval(row['genres'])
-        da.tags['title'] = row['title']
-        
-        # da.tags['cast'] = ast.literal_eval(row['cast'])
-        # da.tags['keywords'] = ast.literal_eval(row['keywords'])
-        docs.append(da)
-        # print(indx)
-    # print(da.text)
-
-    da.plot('document.svg')
-
-print(docs[0].json())
-# for d in docs:
-#     d.plot()
-
-print(docs[0].granularity)
-print(docs[0].adjacency)
-print(type(docs.get_vocabulary()))
-# docs.plot_image_sprites(output=None, canvas_size=512, min_size=16, channel_axis=- 1)
-# docs.plot_embeddings(title='MyDocumentArray', image_sprites=False, min_image_size=16, channel_axis=- 1, start_server=True)
-
-# da.plot()
-
-# print(da[])
-# print(da[2].tags)
-
-
-# print(da[1].text)
-
-if __name__ == "__main__":
-    model = "sentence-transformers/paraphrase-distilroberta-base-v1"
-
-    # flow = (
-    #     Flow(install_requirements = True)
-    #     .add(
-    #         name="Text_Encoder",
-    #         uses="jinahub://TransformerTorchEncoder",
-    #         uses_with={"pretrained_model_name_or_path": model},
-    #         install_requirements = True
-    #     )
-    #     .add(
-    #         name="Text_Indexer",
-    #         uses='jinahub://SimpleIndexer',
-    #         uses_metas={'workspace': '/indexing/tmp_folder'},
-    #         install_requirements = True
-    #     )
-    #     # .add(
-    #     #     uses='jinahub+docker://CLIPTextEncoder/',
-    #     #     install_requirements = True
-    #     #     )
-    # )
-
-    # "en_core_web_md"
-    print(docs[0].json())
-    flow = (
-        Flow()
-        # .add(
-        #     uses="jinahub://SpacyTextEncoder",
-        #     uses_with={"model_name": "en_core_web_md"},
-        #     name="Spacy_encoder",
-        #     install_requirements=True
-        # )
-        # .add(
-        #     uses="jinahub+docker://SimpleIndexer",
-        #     uses_metas={"workspace": "workspace/indexing"},
-        #     volumes="./workspace:/workspace/workspace",
-        #     name="Simple_indexer"
-        # )
-        .add(
-        name='text_encoder',
-        uses=TextEncoder,
-        # uses_with={'parameters': {'traversal_paths': 'r'}},       #changed c to r
-        )
-        .add(
-            name='simple_indexer',
-            uses=SimpleIndexer,
-            uses_metas={"workspace": "workspace/indexing"},
-            # volumes="./workspace:/workspace/indexing",
-        )
-    )   
-
-    flow.plot('flow.svg')
-
-    # with flow:
-    #     flow.index(
-    #         inputs=docs,
-    #   )
-    with flow:
-        flow.post(on='/index', inputs=docs, on_done=print)
+def get_recommendations(movie_query):
+    result_final = jina_app.query_results(movie_query)
     
 
-    # with flow:
-    #     flow.index(
-    #     inputs=docs,
-    #     docs = docs
-    #     # parameters = {'name' : 'something', 'xyz' : 'fsdfsdfsa'}
-    # )
 
-    query_flow = (
-        Flow()
-        # Create vector representations from query
-        .add(name='query_transformer', uses=TextEncoder)
-        # Use encoded question to search our index
-        .add(
-            name='simple_indexer',
-            uses=SimpleIndexer
-            # uses_metas={"workspace": "./workspace/indexing"},
-        )
-    )
+app = flask.Flask(__name__, template_folder='templates')
 
-
-    query = Document(text = input('Query movie: '))
-    # with query_flow:
-    #     # query = Document(text = input('Query movie : '))
-
-    #     response = query_flow.post(on='/search', inputs = query, return_results = True)
-        
-    with flow:    
-        response = flow.post(on='/search', inputs = query, return_results = True)
-
-    matches = response[0].docs[0].matches
+app = Flask(__name__)
+@app.route("/")
+@app.route("/index")
+def index():
+    NewMovies=[]
+    with open('movieR.csv','r') as csvfile:
+        readCSV = csv.reader(csvfile)
+        NewMovies.append(random.choice(list(readCSV)))
+    movie_query = NewMovies[0][0]
+    movie_query = movie_query.title()
     
-    for ind, i in enumerate(matches):
-        print(f' Movie Title :  {i.tags["title"]} '.center(60,'='))
-        print()
-        print(i.text)
-        print()
+    with open('movieR.csv', 'a',newline='') as csv_file:
+        fieldnames = ['Movie']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writerow({'Movie': movie_query})
+        recom_list = get_recommendations(movie_query)
+        names = []
+        dates = []
+        ratings = []
+        overview=[]
+        types=[]
+        mid=[]
+        for i in range(len(recom_list)):
+            names.append(recom_list.iloc[i][0])
+            dates.append(recom_list.iloc[i][1])
+            ratings.append(recom_list.iloc[i][2])
+            overview.append(recom_list.iloc[i][3])
+            types.append(recom_list.iloc[i][4])
+            mid.append(recom_list.iloc[i][5])
+    suggestions =   get_suggestions()      #get_suggestions
+    
+    return render_template('index.html',suggestions=suggestions,movie_type=types[5:],movieid=mid,movie_overview=overview,movie_names=names,movie_date=dates,movie_ratings=ratings,search_name=m_name)
+
+# Set up the main route
+@app.route('/positive', methods=['GET', 'POST'])
+
+def main():
+    if flask.request.method == 'GET':
+        return(flask.render_template('index.html'))
+
+    if flask.request.method == 'POST':
+        movie_query = flask.request.form['movie_name']
+        movie_query = movie_query.title()
+        with open('movieR.csv', 'a',newline='') as csv_file:
+            fieldnames = ['Movie']
+            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+            writer.writerow({'Movie': movie_query})
+        recom_list = jina_app.query_results(movie_query)
+
+        #recom_list has list of all recommended movie titles use them to find other details from the csv
+        names = []
+        dates = []
+        ratings = []
+        overview=[]
+        types=[]
+        mid=[]
+        if len(recom_list) == 0:
+            return flask.render_template('Nota.html')
+        for i in range(len(recom_list)):
+            names.append(recom_list.iloc[i][0])
+            dates.append(recom_list.iloc[i][1])
+            ratings.append(recom_list.iloc[i][2])
+            overview.append(recom_list.iloc[i][3])
+            types.append(recom_list.iloc[i][4])
+            mid.append(recom_list.iloc[i][5])
+            
+        return flask.render_template('positive.html',movie_type=types[5:],movieid=mid,movie_overview=overview,movie_names=names,movie_date=dates,search_name=movie_query)
+
+if __name__ == '__main__':
+    app.run()
