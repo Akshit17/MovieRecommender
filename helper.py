@@ -47,7 +47,8 @@ class SimpleIndexer(Executor):
             print("Type of d.matches is {} ".format(d.matches))
             for m in d.matches:
                 # Get cosine similarity
-                m.plot('m.svg')
+                # m.plot('m.svg')
+                print("{} is the m.text".format(m.text))
                 print("parent_id for m is {}".format(m.id))                  #giving an empty string for m.parent_id
                 match_similarity[m.parent_id] += m.scores['cosine'].value
 

@@ -1,5 +1,7 @@
 import ast
 import csv
+from fastapi import Query
+import requests
 from jina import Document, DocumentArray, DocumentArrayMemmap
 from jina import Flow, Executor
 from helper import SimpleIndexer, TextEncoder
@@ -76,8 +78,16 @@ def query_results(docs, query):
         flow.post(on='/index', inputs=docs, on_done=print)
 
     with flow:    
+        flow.protocol = 'http'
+        # flow.port_expose = 34567
+        print("{} is query and {} is its type".format(query, type(query)) )
         response = flow.post(on='/search', inputs = query, return_results = True)
-    
+            # response = requests.post('http://127.0.0.1:34567/search', inputs = query)
+            # res = response.json()
+            # return_text = res["data"]['docs'][0]['matches'][0]
+            # print("return_text is {}".format(return_text))
+    # flow.block()
+
     recommended_movies = []
     print("{} IS THE RESPONSE !!!".format(response))
     matches = response[0].data.docs[0].matches
