@@ -1,10 +1,12 @@
 import ast
+import os
 import csv
 from fastapi import Query
 import requests
 from jina import Document, DocumentArray, DocumentArrayMemmap
 from jina import Flow, Executor
 from helper import SimpleIndexer, TextEncoder
+
 
 
 def gen_docarray():
@@ -46,7 +48,8 @@ def indexnsearch(docs, query):
         flow.post(on='/index', inputs=docs, on_done=print)
     
     with flow:    
-        response = flow.post(on='/search', inputs = query, return_results = True)
+        # response = flow.post(on='/search', inputs = query, return_results = True)
+        response = flow.post(on='/search', inputs = DocumentArray([Document(text=query)]), return_results = True)
     
     print("{} IS THE RESPONSE !!!".format(response))
     matches = response[0].docs[0].matches
@@ -56,10 +59,45 @@ def indexnsearch(docs, query):
         print(i.text)
 
 
-
-def query_results(docs, query):
+def search_results(docs, query):
     flow = (
-        Flow(cors=True)
+        Flow(cors=True, protocol='http', port_expose=34567)
+        .add(
+        name='text_encoder',
+        uses=TextEncoder,
+        )
+        .add(
+            name='simple_indexer',
+            uses=SimpleIndexer,
+            uses_metas={"workspace": "workspace/indexing"},
+            volumes="./workspace:/workspace/indexing",
+        )
+    )   
+
+    with flow:    
+        # response = flow.post(on='/search', inputs = query, return_results = True)
+        response = flow.post(on='/search', inputs = DocumentArray([Document(text=query)]), return_results = True)
+        print(response)
+
+        recommended_movies = []
+        print("{} IS THE RESPONSE !!!".format(response))
+        matches = response[0].data.docs[0].matches
+
+        for ind, i in enumerate(matches):
+            print(f' Movie Title :  {i.tags["title"]} '.center(60,'='))
+            recommended_movies.append(i.tags["title"])
+            print(i.text)
+            print()
+
+        recommended_movies  = list(dict.fromkeys(recommended_movies))  #To remove the duplicates
+        print(recommended_movies)
+        flow.block()
+        print("YOU MADE IT OUT OF FLOW.BLOCK(1111111)?!")
+    print("YOU MADE IT OUT OF FLOW.BLOCK(222222222)?!")
+
+def query_results(docs):#, query):
+    flow = (
+        Flow(cors=True, protocol='http', port_expose=34567)
         .add(
         name='text_encoder',
         uses=TextEncoder,
@@ -76,35 +114,42 @@ def query_results(docs, query):
 
     with flow:
         flow.post(on='/index', inputs=docs, on_done=print)
+        flow.block()
 
-    with flow:    
-        flow.protocol = 'http'
-        # flow.port_expose = 34567
-        print("{} is query and {} is its type".format(query, type(query)) )
-        response = flow.post(on='/search', inputs = query, return_results = True)
+    # with flow: 
+    #     flow.block()
+
+    # with flow:    
+    #     print(flow.protocol) #= 'http'
+    #     print(flow.port_expose) #= 34567
+    #     print("{} is query and {} is its type".format(query, type(query)) )
+    #     response = flow.post(on='/search', inputs = query, return_results = True)
+
+        # response = flow.post(on='/search', inputs = DocumentArray([Document(text=query)]), return_results = True)
             # response = requests.post('http://127.0.0.1:34567/search', inputs = query)
             # res = response.json()
             # return_text = res["data"]['docs'][0]['matches'][0]
             # print("return_text is {}".format(return_text))
     # flow.block()
+'''     '''
+    # recommended_movies = []
+    # print("{} IS THE RESPONSE !!!".format(response))
+    # matches = response[0].data.docs[0].matches
 
-    recommended_movies = []
-    print("{} IS THE RESPONSE !!!".format(response))
-    matches = response[0].data.docs[0].matches
+    # for ind, i in enumerate(matches):
+    #     print(f' Movie Title :  {i.tags["title"]} '.center(60,'='))
+    #     recommended_movies.append(i.tags["title"])
+    #     print(i.text)
+    #     print()
 
-    for ind, i in enumerate(matches):
-        print(f' Movie Title :  {i.tags["title"]} '.center(60,'='))
-        recommended_movies.append(i.tags["title"])
-        print(i.text)
-        print()
-
-    recommended_movies  = list(dict.fromkeys(recommended_movies))  #To remove the duplicates
-    return recommended_movies       
-
+    # recommended_movies  = list(dict.fromkeys(recommended_movies))  #To remove the duplicates
+    # return recommended_movies       
+'''     '''
 
 if __name__ == "__main__":
+    os.system('rm -rf workspace')
     docs = gen_docarray()
-    query = Document(text = input('Query movie: '))
-    # indexnsearch(docs, query)
+    # query = Document(text = input('Query movie: '))
+    # # indexnsearch(docs, query)
 
-    query_results(docs, query)
+    query_results(docs)#, query)
