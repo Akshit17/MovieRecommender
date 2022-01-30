@@ -1,8 +1,7 @@
 import ast
 import os
 import csv
-from fastapi import Query
-import requests
+import pickle
 from jina import Document, DocumentArray, DocumentArrayMemmap
 from jina import Flow, Executor
 from helper import SimpleIndexer, TextEncoder
@@ -12,7 +11,13 @@ from helper import SimpleIndexer, TextEncoder
 def gen_docarray():
     docs = DocumentArray()
 
-    with open("./data_finalize/lite_movies_metadata.csv", encoding="utf-8") as file:      # Complete dataset taking too much time to get indexed
+
+    with open('./data_finalize/embeddings.pkl', "rb") as fIn:
+        stored_data = pickle.load(fIn)
+        stored_sentences = stored_data['sentences']
+        stored_embeddings = stored_data['embeddings']
+
+    with open("./data_finalize/movies_metadata.csv", encoding="utf-8") as file:      # Complete dataset taking too much time to get indexed
         reader = csv.DictReader(file)
         movies = []
 
@@ -22,6 +27,7 @@ def gen_docarray():
             da = Document(text=row['overview']) #tags=ast.literal_eval(row['cast'])
             da.tags['genres'] = ast.literal_eval(row['genres'])
             da.tags['title'] = row['title']
+            da.embeddings = stored_embeddings[indx]
             docs.append(da)
     # d.plot('document.svg') for d in docs
     # print(type(docs.get_vocabulary()))

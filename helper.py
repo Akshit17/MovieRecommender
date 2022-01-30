@@ -78,14 +78,14 @@ class TextEncoder(Executor):
     def __init__(self, parameters: dict = {'traversal_paths': 'r'}, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.model = SentenceTransformer(
-            # 'multi-qa-MiniLM-L6-cos-v1', device='cuda', cache_folder='.'
             # 'multi-qa-MiniLM-L6-cos-v1', device='cpu', cache_folder='.'
-            'all-MiniLM-L6-v2', device='cpu', cache_folder='.'
+            # 'all-MiniLM-L6-v2', device='cpu', cache_folder='.'
+            'all-MiniLM-L12-v2', device='cpu', cache_folder='.'
         )
         self.parameters = parameters
         # model = SentenceTransformer('')
 
-    @requests(on=['/search', '/index'])
+    @requests(on=['/search', '/embed'])
     def encode(self, docs: DocumentArray, **kwargs):
         """Wraps encoder from sentence-transformers package"""
         print("BEHOLD!!!! I AM EMBEDDING !!!!")
@@ -100,5 +100,6 @@ class TextEncoder(Executor):
         with torch.inference_mode():
             # print(target.texts)                           #gave none when travesal_path set to c
             embeddings = self.model.encode(target.texts)
+            print(type(embeddings))
             # print(embeddings.shape)             # gives (1 , 384) ??    now gives (100, 384)
             target.embeddings = embeddings
