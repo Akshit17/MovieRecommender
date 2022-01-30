@@ -10,8 +10,6 @@ class SimpleIndexer(Executor):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # self._docs = DocumentArrayMemmap(".")
-        # self._docs = DocumentArrayMemmap()
         print("{} IS self.workspace".format(self.workspace))
         self._docs = DocumentArrayMemmap(self.workspace + '/indexer')
 
@@ -39,17 +37,17 @@ class SimpleIndexer(Executor):
         i = 1
         print(docs.embeddings.shape)
         for d in docs:
-            if i == 1:
-                d.plot('match1.svg')
 
+            d.plot('match.svg')
             match_similarity = defaultdict(float)
+
             # For each match
             print("Type of d.matches is {} ".format(d.matches))
             for m in d.matches:
                 # Get cosine similarity
                 # m.plot('m.svg')
                 print("{} is the m.text".format(m.text))
-                print("parent_id for m is {}".format(m.id))                  #giving an empty string for m.parent_id
+                # print("parent_id for m is {}".format(m.id))                  #giving an empty string for m.parent_id
                 match_similarity[m.parent_id] += m.scores['cosine'].value
 
             sorted_similarities = sorted(
@@ -59,20 +57,9 @@ class SimpleIndexer(Executor):
             print(match_similarity)
             print(sorted_similarities)
 
-            # Rank matches by similarity and collect them
-
-            # d.matches.clear()
-
-            # for k, _ in sorted_similarities:
-            #     m = Document(self._docs[k], copy=True)
-            #     d.matches.append(m)
-            #     # Only return top 10 answers
-            #     if len(d.matches) >= 10:
-            #         break
-
             # Remove embedding as it is not needed anymore
             d.pop('embedding')
-        print(i)
+
 
 class TextEncoder(Executor):
     def __init__(self, parameters: dict = {'traversal_paths': 'r'}, *args, **kwargs):
@@ -83,7 +70,6 @@ class TextEncoder(Executor):
             'all-MiniLM-L12-v2', device='cpu', cache_folder='.'
         )
         self.parameters = parameters
-        # model = SentenceTransformer('')
 
     @requests(on=['/search', '/embed'])
     def encode(self, docs: DocumentArray, **kwargs):
@@ -91,15 +77,12 @@ class TextEncoder(Executor):
         print("BEHOLD!!!! I AM EMBEDDING !!!!")
         traversal_paths = self.parameters.get('traversal_paths')
         target = docs.traverse_flat(traversal_paths)
-        
-        # count = 0
-        # for i in target:
-        #     count = count + 1             
-        # print("elems in target are: {}".format(count))
 
         with torch.inference_mode():
             # print(target.texts)                           #gave none when travesal_path set to c
             embeddings = self.model.encode(target.texts)
-            print(type(embeddings))
-            # print(embeddings.shape)             # gives (1 , 384) ??    now gives (100, 384)
+            # print("For query itis:-")
+            # print(type(embeddings))
+            # print(embeddings)
+            # print(embeddings.shape)             # (1,384) for current model
             target.embeddings = embeddings
