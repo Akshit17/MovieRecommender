@@ -52,26 +52,26 @@ def main():
             print(res['data']['docs'][0]['matches'][i]['tags']['title'])
             recommended_movies.append(res['data']['docs'][0]['matches'][i]['tags']['title'])
 
-        recommended_movies  = list(dict.fromkeys(recommended_movies))  #To remove the duplicates
+        recom_list = list(dict.fromkeys(recommended_movies))  #To remove the duplicates
 
-        # #recom_list has list of all recommended movie titles use them to find other details from the csv
-        # df = pd.read_csv("./data_finalize/movies_metadata.csv")
-        # recom_df = df.loc[df['title'].isin(recom_list)]
+        #recom_list has list of all recommended movie titles use them to find other details from the csv
+        df = pd.read_csv("./data_finalize/movies_metadata.csv")
+        recom_df = df.loc[df['title'].isin(recom_list)]
 
-        # names = []
-        # overview=[]
-        # mid=[]
+        names = []
+        overview=[]
+        mid=[]
         
-        # if len(recom_list) == 0:
-        #     return flask.render_template('Nota.html')
-        # for i in range(len(recom_list)):
-        #     names.append(recom_df.iloc[i][0])
-        #     overview.append(recom_df.iloc[i][4])
-        #     mid.append(recom_df.iloc[i][3])
+        if len(recom_list) == 0:
+            return flask.render_template('Nota.html')
+        for i in range(len(recom_list)):
+            names.append(recom_df.iloc[i][0])
+            overview.append(recom_df.iloc[i][2])
+            mid.append(recom_df.iloc[i][3])
             
         #render /positive page pls??
-        # return flask.render_template('index.html',movieid=mid,movie_overview=overview,movie_names=names,search_name=movie_query)
-        return flask.render_template('Nota.html')
+        return flask.render_template('recom.html',movieid=mid, movie_overview=overview, movie_names=names, search_name=movie_query)
+        # return flask.render_template('Nota.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
