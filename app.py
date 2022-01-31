@@ -18,7 +18,7 @@ def get_recommendations(movie_query):
     
 # app = flask.Flask(__name__, template_folder='templates')
 
-app = Flask(__name__, template_folder='static')
+app = Flask(__name__, template_folder='templates')
 @app.route("/")
 @app.route("/index")
 def index():
@@ -40,7 +40,8 @@ def main():
         movie_query = movie_query.title()
 
         recommended_movies = []
-        url = f"http://0.0.0.0:34567/search"
+        # url = f"http://0.0.0.0:34567/search"
+        url = f"http://127.0.0.1:34567/search"
 
         headers = {
         'Content-Type': 'application/json',

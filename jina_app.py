@@ -61,7 +61,7 @@ def query_results(docs):#, query):
 
 
 if __name__ == "__main__":
-    os.system('rm -rf workspace')
+    # os.system('rm -rf workspace')
     docs = gen_docarray()
     # query = Document(text = input('Query movie: '))   #Uncomment if you wish to give queries from terminal instead of Web-app
    

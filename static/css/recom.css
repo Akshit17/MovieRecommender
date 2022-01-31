@@ -1,0 +1,25 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+  }
+  
+  .fullscreen {
+    width: 100vw;
+    height: 100vh;
+    background: #020001;
+  }
+  .fullscreen .container {
+    padding: 15px;
+    max-width: 1200px;
+    margin: auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }

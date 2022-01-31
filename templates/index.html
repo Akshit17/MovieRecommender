@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Movie Recommender</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/css/autoComplete.min.css">
-    <link rel="stylesheet" href="style1.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/css/autoComplete.min.css"> -->
+    
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style1.css') }}">
     <!-- <script type="text/javascript">
       var films = {{suggestions|tojson}};
     </script> -->
@@ -27,6 +28,9 @@
     </form>
       <br>
   </div></center>
+
+
+  
   
 </body>
 </html>
