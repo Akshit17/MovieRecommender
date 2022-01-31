@@ -1,103 +1,77 @@
-import sys
-import os
-import ast
+import requests
+import flask
+from flask import Flask, render_template, request
 import csv
+import pandas as pd
+
+import jina_app
 from jina import Document, DocumentArray, DocumentArrayMemmap
 from jina import Flow, Executor
 
+def get_suggestions():
+    data = pd.read_csv('./data_finalize/movies_metadata.csv')
+    return list(data['title'].str.capitalize())
 
-# da = DocumentArray.load_csv("./movies_metadata.csv")
-#UnicodeDecodeError: 'charmap' codec can't decode byte 0x9d in position 455: character maps to <undefined>
+def get_recommendations(movie_query):
+    result = jina_app.query_results(movie_query)
+    return result
+    
+# app = flask.Flask(__name__, template_folder='templates')
 
+app = Flask(__name__, template_folder='static')
+@app.route("/")
+@app.route("/index")
+def index():
+   
 
-# da = DocumentArray.load_csv("./movies_metadata.csv", encoding="utf8")
-#gives error with encoding .  No attribute named 'encoding' either to specify encoding or to use utf8
+    suggestions =   get_suggestions()      #get_suggestions
+    
+    return render_template('index.html',suggestions=suggestions) #,movieid=mid,movie_overview=overview,movie_names=names,search_name=movie_query)
 
-docs = DocumentArray()
+# Set up the main route
+@app.route('/positive', methods=['GET', 'POST'])
 
-with open("movies_metadata.csv", encoding="utf-8") as file:
-    #setup csv reader
-    reader = csv.DictReader(file)
-    #setup list to hold dictionaries
-    movies = []
-    #loop through each row in the csv
-    for row in reader:
-        # print(row.keys())
-        #append each row to the list
-        movies.append(row['overview'])
-        da = Document(text=row['overview']) #tags=ast.literal_eval(row['cast'])
-        da.tags['genres'] = ast.literal_eval(row['genres'])
-        da.tags['title'] = row['title']
+def main():
+    if flask.request.method == 'GET':
+        return(flask.render_template('index.html'))
+
+    if flask.request.method == 'POST':
+        movie_query = flask.request.form['movie_name']
+        movie_query = movie_query.title()
+
+        recommended_movies = []
+        url = f"http://0.0.0.0:34567/search"
+
+        headers = {
+        'Content-Type': 'application/json',
+        }
+        data = '{"top_k":10,"mode":"search","data":["' + movie_query + '"]}'
+        response = requests.post(url, headers=headers, data=data)
+        res = response.json()
+        for i in range (0,10):
+            print(res['data']['docs'][0]['matches'][i]['tags']['title'])
+            recommended_movies.append(res['data']['docs'][0]['matches'][i]['tags']['title'])
+
+        recom_list = list(dict.fromkeys(recommended_movies))  #To remove the duplicates
+
+        #recom_list has list of all recommended movie titles use them to find other details from the csv
+        df = pd.read_csv("./data_finalize/movies_metadata.csv")
+        recom_df = df.loc[df['title'].isin(recom_list)]
+
+        names = []
+        overview=[]
+        mid=[]
         
-        # da.tags['cast'] = ast.literal_eval(row['cast'])
-        # da.tags['keywords'] = ast.literal_eval(row['keywords'])
-        docs.append(da)
+        if len(recom_list) == 0:
+            return flask.render_template('Nota.html')
+        for i in range(len(recom_list)):
+            names.append(recom_df.iloc[i][0])
+            overview.append(recom_df.iloc[i][2])
+            mid.append(recom_df.iloc[i][3])
+            
+        #render /positive page pls??
+        return flask.render_template('recom.html',movieid=mid, movie_overview=overview, movie_names=names, search_name=movie_query)
+        # return flask.render_template('Nota.html')
 
-    # print(da.text)
-
-    # da.plot()
-
-# print(docs[0].json())
-# for d in docs:
-#     d.plot()
-
-print(type(docs.get_vocabulary()))
-# docs.plot_image_sprites(output=None, canvas_size=512, min_size=16, channel_axis=- 1)
-# docs.plot_embeddings(title='MyDocumentArray', image_sprites=False, min_image_size=16, channel_axis=- 1, start_server=True)
-
-# da.plot()
-
-# print(da[])
-# print(da[2].tags)
-
-
-# print(da[1].text)
-
-if __name__ == "__main__":
-    model = "sentence-transformers/paraphrase-distilroberta-base-v1"
-
-    flow = (
-        Flow(install_requirements = True)
-        .add(
-            name="Text_Encoder",
-            uses="jinahub://TransformerTorchEncoder",
-            uses_with={"pretrained_model_name_or_path": model},
-            install_requirements = True
-        )
-        # .add(
-        #     name="Text_Indexer",
-        #     uses='jinahub://SimpleIndexer',
-        #     uses_metas={'workspace': '/indexing/tmp_folder'},
-        #     install_requirements = True
-        # )
-        .add(
-            uses='jinahub+docker://CLIPTextEncoder/',
-            install_requirements = True
-            )
-    )
-
-    print(flow)
-
-    # with flow:
-    #     flow.index(
-    #         inputs=docs,
-    #   )
-
-    with flow:
-        flow.index(
-        inputs=docs,
-        docs = docs,
-        parameters = {'name' : 'something', 'xyz' : 'fsdfsdfsa'}
-    )
-
-    query = Document(text = input('Query song : '))
-    with flow:
-        response = flow.search(inputs = query, return_results = True)
-
-    matches = response[0].docs[0].matches
-        
-    for ind, i in enumerate(matches):
-        print(f' Movie Title :  {i.tags["title"]} '.center(60,'='))
-        print()
-        print(i.text)
-        print()
+if __name__ == '__main__':
+    app.run(debug=True)
