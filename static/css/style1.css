@@ -1,3 +1,4 @@
+
 @font-face {
   font-family: 'Sucrose Bold Two';
   src: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/sucrose.woff2") format("woff2");
@@ -6,14 +7,32 @@
   font-family: 'IM Fell French Canon Pro';
   src: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/im-fell-french-canon-pro.woff2") format("woff2");
 }
+
 * {
   box-sizing: border-box;
+}
+
+#large-header {
+ position: relative;
+ width: auto;
+ 
+
+}
+
+#large-header canvas, #loader {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+ 
 }
 
 body{
   width: 100vw;
   height: 100vh;
-  background-color:black;
+  background-color:rgb(36, 128, 214);
   background-size: cover;
 
 }
@@ -29,7 +48,9 @@ header h1 {
   text-align: center;
   color:white;
   left:800px;
+ 
 }
+
 #popular{
   font-family: 'Sucrose Bold Two';
   font-size: 3vw;
@@ -43,7 +64,7 @@ header h1 span {
   text-align: center;
 }
 #autoComplete {
-  background-position: 98% ;
+  background-position: 100% ;
 }
 h3{
   color: white;
@@ -115,6 +136,7 @@ img {
   font-weight: 400;
   margin: 0;
 }
+
 :root {
   font-size: 20px;
 }
@@ -133,6 +155,7 @@ img {
     font-size: 12px;
   }
 }
+
 .wrapper {
   height: inherit;
   width: inherit;
@@ -148,8 +171,8 @@ img {
 }
 
 .card {
-  width: 28rem;
-  height: 16rem;
+  width: 15rem;
+  height: 22rem;
   margin: 2em;
   background: #aaa;
   background-size: cover;

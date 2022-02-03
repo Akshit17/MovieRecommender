@@ -227,7 +227,7 @@ movies_metadata['tags'] = movies_metadata['tags'].apply(lambda x: " ".join(x))
 movies_metadata['overview'] = movies_metadata['overview'].apply(back_convert)
 
 # movies_metadata = movies_metadata[["title","genres","imdb_id","tmdb_id", "tags", "overview",  "cast", "keywords" ,"poster_path", "original_language", "release_year"]]
-movies_metadata = movies_metadata[["title", "tags", "overview", "genres", "cast", "keywords"]]
+movies_metadata = movies_metadata[["title", "imdb_id","tmdb_id", "tags", "overview", "genres", "cast", "keywords"]]
 movies_metadata.to_csv('movies_metadata.csv', index = False)
 
 
