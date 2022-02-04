@@ -67,7 +67,7 @@ def main():
             return flask.render_template('Nota.html')
         for i in range(len(recom_list)):
             names.append(recom_df.iloc[i][0])
-            overview.append(recom_df.iloc[i][3])
+            overview.append(recom_df.iloc[i][4])
             mid.append(recom_df.iloc[i][2])
             
         #render /positive page pls??

@@ -4,10 +4,9 @@
   <meta charset="UTF-8">
   <title>Movie Recommender</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/recom.css') }}">
-    <script> Console.log('{{mid}}') </script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/recom.css') }}">
+
 </head>
 <body>
 
@@ -24,12 +23,8 @@
 
 
     <div class="container" >
+      
       <div class="card card_1" id="image1">
-        <div class="date">
-          <!-- movie_date[0]-->
-          RandomDate
-          <span class="tv_ico"><img src="http://www.cartaodental.com/nbase/image/pc.svg"></span>
-        </div>
         <div class="content">
           <div class="title">
             {{ movie_names[0]}}
@@ -40,20 +35,17 @@
         </div>
         <div class="sinopse">
 
-
           <iframe id="ytplayer" type="text/html"  frameborder="0" autoplay allowfullscreen></iframe>
           <div class="content-sinopse">
             <div class="title">Series Synopsis</div>
-            <div class="text">{{ movie_overview[0] }}
-            </div>
+            <div class="text">{{ movie_overview[0] }}</div>
           </div>
+
         </div>
       </div>
+
+
       <div class="card card_2" id="image2">
-        <div class="date">
-          <!-- movie_date[1] -->
-          RandomDate
-        </div>
         <div class="content">
           <div class="title">
             {{ movie_names[1]}}
@@ -65,7 +57,7 @@
         <div class="sinopse">
 
 
-          <iframe id="ytplayer1" class="player2" type="text/html"  frameborder="0" autoplay allowfullscreen></iframe>
+          <iframe id="ytplayer1" class="player1" type="text/html"  frameborder="0" autoplay allowfullscreen></iframe>
           <div class="content-sinopse">
             <div class="title">Series Synopsis</div>
             <div class="text">{{ movie_overview[1] }}
@@ -74,10 +66,7 @@
         </div>
       </div>
       <div class="card card_3" id="image3">
-        <div class="date">
-          <!-- movie_date[2] -->
-          RandomDate
-        </div>
+       
         <div class="content">
           <div class="title">
             {{ movie_names[2]}}
@@ -97,17 +86,69 @@
           </div>
         </div>
       </div>
+
+      <div class="card card_4" id="image3">
+       
+        <div class="content">
+          <div class="title">
+            {{ movie_names[3]}}
+          </div>
+          <div class="text">
+  
+          </div>
+        </div>
+        <div class="sinopse">
+          <iframe id="ytplayer3" class="player3" type="text/html"  frameborder="0" autoplay allowfullscreen></iframe>
+  
+  
+          <div class="content-sinopse">
+            <div class="title">Series Synopsis</div>
+            <div class="text">{{ movie_overview[3] }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="card card_5" id="image3">
+         
+        <div class="content">
+          <div class="title">
+            {{ movie_names[4]}}
+          </div>
+          <div class="text">
+  
+          </div>
+        </div>
+        <div class="sinopse">
+          <iframe id="ytplayer4" class="player4" type="text/html"  frameborder="0" autoplay allowfullscreen></iframe>
+  
+  
+          <div class="content-sinopse">
+            <div class="title">Series Synopsis</div>
+            <div class="text">{{ movie_overview[4] }}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
+
+
+    </div>
+         
+    </div>
+
+  
       <footer>
        
       </footer>
 
 <!-- partial -->
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
-fetch("https://api.themoviedb.org/3/movie/"+{{movieid[0]}}+"?api_key=06412c2ac60d3b3a66c7fb129dcaca28&language=en-US")
+fetch("https://api.themoviedb.org/3/movie/"+{{movieid[0]}}+"?api_key=58324bd42da27aa05d2eae68848a10b2&language=en-US")
     .then((response) => response.json())
     .then((data) => {
     const value = data.poster_path;
@@ -118,7 +159,7 @@ fetch("https://api.themoviedb.org/3/movie/"+{{movieid[0]}}+"?api_key=06412c2ac60
 	 document.getElementById('image1').style.backgroundRepeat = "no-repeat";
 	  document.getElementById('image1').style.backgroundSize = "cover";
 });
-fetch("https://api.themoviedb.org/3/movie/"+{{movieid[1]}}+"?api_key=06412c2ac60d3b3a66c7fb129dcaca28&language=en-US")
+fetch("https://api.themoviedb.org/3/movie/"+{{movieid[1]}}+"?api_key=58324bd42da27aa05d2eae68848a10b2&language=en-US")
     .then((response) => response.json())
     .then((data) => {
     const value = data.poster_path;
@@ -129,7 +170,7 @@ fetch("https://api.themoviedb.org/3/movie/"+{{movieid[1]}}+"?api_key=06412c2ac60
 	 document.getElementById('image2').style.backgroundRepeat = "no-repeat";
 	  document.getElementById('image2').style.backgroundSize = "cover";
 });
-fetch("https://api.themoviedb.org/3/movie/"+{{movieid[2]}}+"?api_key=06412c2ac60d3b3a66c7fb129dcaca28&language=en-US")
+fetch("https://api.themoviedb.org/3/movie/"+{{movieid[2]}}+"?api_key=58324bd42da27aa05d2eae68848a10b2&language=en-US")
     .then((response) => response.json())
     .then((data) => {
     const value = data.poster_path;
@@ -140,6 +181,72 @@ fetch("https://api.themoviedb.org/3/movie/"+{{movieid[2]}}+"?api_key=06412c2ac60
 	 document.getElementById('image3').style.backgroundRepeat = "no-repeat";
 	  document.getElementById('image3').style.backgroundSize = "cover";
 });
+
+
+fetch("https://api.themoviedb.org/3/movie/"+{{movieid[3]}}+"?api_key=58324bd42da27aa05d2eae68848a10b2&language=en-US")
+    .then((response) => response.json())
+    .then((data) => {
+    const value = data.poster_path;
+    //Apply HTML src
+
+     var urlString = "url('https://image.tmdb.org/t/p/original" + value + " ')";
+     document.getElementById('image4').style.backgroundImage = urlString;
+	 document.getElementById('image4').style.backgroundRepeat = "no-repeat";
+	  document.getElementById('image4').style.backgroundSize = "cover";
+});
+
+fetch("https://api.themoviedb.org/3/movie/"+{{movieid[4]}}+"?api_key=58324bd42da27aa05d2eae68848a10b2&language=en-US")
+  .then((response) => response.json())
+  .then((data) => {
+  const value = data.poster_path;
+  //Apply HTML src
+
+    var urlString = "url('https://image.tmdb.org/t/p/original" + value + " ')";
+    document.getElementById('image5').style.backgroundImage = urlString;
+  document.getElementById('image5').style.backgroundRepeat = "no-repeat";
+  document.getElementById('image5').style.backgroundSize = "cover";
+});
+
+  fetch("https://api.themoviedb.org/3/movie/"+{{movieid[5]}}+"?api_key=58324bd42da27aa05d2eae68848a10b2&language=en-US")
+    .then((response) => response.json())
+    .then((data) => {
+    const value = data.poster_path;
+    //Apply HTML src
+
+     var urlString = "url('https://image.tmdb.org/t/p/original" + value + " ')";
+     document.getElementById('image6').style.backgroundImage = urlString;
+	 document.getElementById('image6').style.backgroundRepeat = "no-repeat";
+	  document.getElementById('image6').style.backgroundSize = "cover";
+});
+
+
+ fetch("https://api.themoviedb.org/3/movie/"+{{movieid[6]}}+"?api_key=58324bd42da27aa05d2eae68848a10b2&language=en-US")
+    .then((response) => response.json())
+    .then((data) => {
+    const value = data.poster_path;
+    //Apply HTML src
+
+     var urlString = "url('https://image.tmdb.org/t/p/original" + value + " ')";
+     document.getElementById('image7').style.backgroundImage = urlString;
+	 document.getElementById('image7').style.backgroundRepeat = "no-repeat";
+	  document.getElementById('image7').style.backgroundSize = "cover";
+});
+
+  
+ fetch("https://api.themoviedb.org/3/movie/"+{{movieid[7]}}+"?api_key=58324bd42da27aa05d2eae68848a10b2&language=en-US")
+    .then((response) => response.json())
+    .then((data) => {
+    const value = data.poster_path;
+    //Apply HTML src
+
+     var urlString = "url('https://image.tmdb.org/t/p/original" + value + " ')";
+     document.getElementById('image8').style.backgroundImage = urlString;
+	 document.getElementById('image8').style.backgroundRepeat = "no-repeat";
+	  document.getElementById('image8').style.backgroundSize = "cover";
+    });
+ 
+
+
 
 </script>
 
@@ -181,8 +288,11 @@ $('.fullserie .close').click(function(){
   $('.fullserie').removeClass('active');
 });
 </script>
+
+
 <script>
-fetch("https://api.themoviedb.org/3/movie/"+{{movieid[0]}}+"/videos?api_key=06412c2ac60d3b3a66c7fb129dcaca28&append_to_response=videost")
+
+fetch("https://api.themoviedb.org/3/movie/"+{{movieid[0]}}+"/videos?api_key=58324bd42da27aa05d2eae68848a10b2&append_to_response=videost")
 .then((response) => response.json())
 .then((data) => {
 const value = data.results[0].key
@@ -191,7 +301,8 @@ document.getElementById("ytplayer").src = 'https://www.youtube.com/embed/'+value
 //Set Data-Attribute
 document.getElementById("ytplayer").setAttribute('data-video', 'https://www.youtube.com/embed/'+value+'?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&modestbranding=1&controls=0&showinfo=1&mute=1')
 });
-fetch("https://api.themoviedb.org/3/movie/"+{{movieid[1]}}+"/videos?api_key=06412c2ac60d3b3a66c7fb129dcaca28&append_to_response=videost")
+
+fetch("https://api.themoviedb.org/3/movie/"+{{movieid[1]}}+"/videos?api_key=58324bd42da27aa05d2eae68848a10b2&append_to_response=videost")
 .then((response) => response.json())
 .then((data) => {
 const value = data.results[0].key
@@ -200,7 +311,8 @@ document.getElementById("ytplayer1").src = 'https://www.youtube.com/embed/'+valu
 //Set Data-Attribute
 document.getElementById("ytplayer1").setAttribute('data-video', 'https://www.youtube.com/embed/'+value+'?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&modestbranding=1&controls=0&showinfo=1&mute=1')
 });
-fetch("https://api.themoviedb.org/3/movie/"+{{movieid[2]}}+"/videos?api_key=06412c2ac60d3b3a66c7fb129dcaca28&append_to_response=videost")
+
+fetch("https://api.themoviedb.org/3/movie/"+{{movieid[2]}}+"/videos?api_key=58324bd42da27aa05d2eae68848a10b2&append_to_response=videost")
 .then((response) => response.json())
 .then((data) => {
 const value = data.results[0].key
@@ -210,6 +322,52 @@ document.getElementById("ytplayer2").src = 'https://www.youtube.com/embed/'+valu
 document.getElementById("ytplayer2").setAttribute('data-video', 'https://www.youtube.com/embed/'+value+'?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&modestbranding=1&controls=0&showinfo=1&mute=1')
 });
 
-</script> -->
+fetch("https://api.themoviedb.org/3/movie/"+{{movieid[3]}}+"/videos?api_key=58324bd42da27aa05d2eae68848a10b2&append_to_response=videost")
+.then((response) => response.json())
+.then((data) => {
+const value = data.results[0].key
+//Apply HTML src
+document.getElementById("ytplayer3").src = 'https://www.youtube.com/embed/'+value+'?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&modestbranding=1&controls=0&showinfo=1&mute=1'
+//Set Data-Attribute
+document.getElementById("ytplayer3").setAttribute('data-video', 'https://www.youtube.com/embed/'+value+'?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&modestbranding=1&controls=0&showinfo=1&mute=1')
+});
+
+
+fetch("https://api.themoviedb.org/3/movie/"+{{movieid[4]}}+"/videos?api_key=58324bd42da27aa05d2eae68848a10b2&append_to_response=videost")
+.then((response) => response.json())
+.then((data) => {
+const value = data.results[0].key
+//Apply HTML src
+document.getElementById("ytplayer4").src = 'https://www.youtube.com/embed/'+value+'?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&modestbranding=1&controls=0&showinfo=1&mute=1'
+//Set Data-Attribute
+document.getElementById("ytplayer4").setAttribute('data-video', 'https://www.youtube.com/embed/'+value+'?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&modestbranding=1&controls=0&showinfo=1&mute=1')
+});
+
+
+fetch("https://api.themoviedb.org/3/movie/"+{{movieid[5]}}+"/videos?api_key=58324bd42da27aa05d2eae68848a10b2&append_to_response=videost")
+.then((response) => response.json())
+.then((data) => {
+const value = data.results[0].key
+//Apply HTML src
+document.getElementById("ytplayer5").src = 'https://www.youtube.com/embed/'+value+'?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&modestbranding=1&controls=0&showinfo=1&mute=1'
+//Set Data-Attribute
+document.getElementById("ytplayer5").setAttribute('data-video', 'https://www.youtube.com/embed/'+value+'?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&modestbranding=1&controls=0&showinfo=1&mute=1')
+});
+
+
+fetch("https://api.themoviedb.org/3/movie/"+{{movieid[6]}}+"/videos?api_key=58324bd42da27aa05d2eae68848a10b2&append_to_response=videost")
+.then((response) => response.json())
+.then((data) => {
+const value = data.results[0].key
+//Apply HTML src
+document.getElementById("ytplayer6").src = 'https://www.youtube.com/embed/'+value+'?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&modestbranding=1&controls=0&showinfo=1&mute=1'
+//Set Data-Attribute
+document.getElementById("ytplayer6").setAttribute('data-video', 'https://www.youtube.com/embed/'+value+'?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&modestbranding=1&controls=0&showinfo=1&mute=1')
+});
+
+
+
+
+</script>
 </body>
 </html>
