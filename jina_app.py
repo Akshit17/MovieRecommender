@@ -56,7 +56,7 @@ def query_results(docs):#, query):
     flow.plot('flow.svg')
 
     with flow:
-        flow.post(on='/index', inputs=docs, on_done=print)
+        flow.post(on='/index', inputs=docs, on_done=print)   #Uncomment this line to index the data (i.e if /workspace does not exist in your directory)
         flow.block()
 
 
