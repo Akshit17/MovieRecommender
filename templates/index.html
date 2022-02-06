@@ -3,34 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <title>Movie Recommender</title>
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/css/autoComplete.min.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/css/autoComplete.min.css">
     
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style1.css') }}">
-    <!-- <script type="text/javascript">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style1.css') }}">
+    <script type="text/javascript">
       var films = {{suggestions|tojson}};
-    </script> -->
+    </script>
 
 </head>
 
 
 <body>
-  <header>
-  <h1>Movie <span>Recommender</h1>
-  </header>
+ 
 
-  <center><div class="wrap" >
-    <div>
-    <form class="search" action="{{ url_for('main') }}"  method="POST">
-        <input type="text" class="searchTerm" id="autoComplete" autocomplete="off" name="movie_name" placeholder="Search">
-        <button class="searchButton" type="submit"  value="Submit">
-        </button>
-    </form>
-      <br>
-  </div></center>
+  <div id="large-header" class="large-header">
+    <canvas id="demo-canvas" width="1081" height="937"></canvas>
+    <header>
+      <h1>Movie 
+        <span>Recommender</span>
+        </h1>
+     </header>
 
+    <center><div class="wrap" >
+      <div>
+      <form class="search" action="{{ url_for('main') }}"  method="POST">
+          <input type="text" class="searchTerm" id="autoComplete" autocomplete="off" name="movie_name" placeholder="Search">
+          <button class="searchButton" type="submit"  value="Submit">
+          </button>
+      </form>
+        <br>
+    </div></center>
 
-  
-  
+    <div id="loader" class="text-center">
+      <div id="wrapper" class="wrapper">
+           {#  <div class="card" id="image1">
+                  <div class="card__overlay"></div>
+                  <div class="card__content"><span class="card__title">{{movie_names[0]}}</span><br></div>
+                  <span class="card__number">01</span>
+                </div>  #}
+
+        
+      </div>
+   
+    </div>
+
+    <script src="https://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/js/EasePack.min.js"></script>
+    <!-- <script src="https://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/js/rAF.js"></script> -->
+    <script src="https://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/js/TweenLite.min.js"></script>
+    <script src="./static/background.js"></script>
+   
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/js/autoComplete.min.js"></script> -->
+    <!-- <script type="text/javascript" src="{{url_for('static', filename='autocomplete.js')}}"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.5.10/prop-types.min.js'></script>
+
+    <script type="text/javascript" src="{{url_for('static', filename='fetch_movies.js')}}"></script>
+    
 </body>
 </html>

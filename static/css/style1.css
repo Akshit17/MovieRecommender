@@ -14,8 +14,9 @@
 
 #large-header {
  position: relative;
- width: auto;
- 
+ margin: auto;
+ width: 90%;
+ padding: 10px;
 
 }
 
@@ -95,6 +96,15 @@ img {
   padding: 0;
 }
 
+.movie{
+  transition: transform .2s;
+}
+
+.movie:hover {
+  transform: scale(1.1);
+}
+
+
 .movie__figure {
   position: relative;
 }
@@ -103,6 +113,7 @@ img {
   -webkit-box-shadow: 0 0 1em rgba(0, 0, 0, .5);
           box-shadow: 0 0 1em rgba(0, 0, 0, .5);
   margin-bottom: 0.5em;
+  border-radius: 20px;
 }
 
 .movie__vote {
@@ -135,6 +146,8 @@ img {
   font-size: 0.875rem;
   font-weight: 400;
   margin: 0;
+  font-family: 'Sucrose Bold Two';
+  text-align: center;
 }
 
 :root {
@@ -161,8 +174,6 @@ img {
   width: inherit;
   margin: 0 auto;
   padding: 0;
-  display: -webkit-box;
-  display: flex;
   flex-wrap: wrap;
   -webkit-box-align: center;
           align-items: center;
