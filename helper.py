@@ -29,12 +29,10 @@ class SimpleIndexer(Executor):
             metric='cosine',
             normalization=(1, 0),
             limit=10,
-            exclude_self=True,               #Seems to be not working as same matches found in 'match.svg' later
-            # traversal_rdarray='r,',
-            # traversal_rdarray='c,',         #says traversal_rdarray is deprecated
+            exclude_self=True,              
+       
         )
 
-        i = 1
         print(docs.embeddings.shape)
         for d in docs:
 
@@ -45,17 +43,19 @@ class SimpleIndexer(Executor):
             print("Type of d.matches is {} ".format(d.matches))
             for m in d.matches:
                 # Get cosine similarity
+
                 # m.plot('m.svg')
-                print("{} is the m.text".format(m.text))
-                # print("parent_id for m is {}".format(m.id))                  #giving an empty string for m.parent_id
+
+                # print("{} is the m.text".format(m.text))
+                # print("parent_id for m is {}".format(m.id))                
                 match_similarity[m.parent_id] += m.scores['cosine'].value
 
             sorted_similarities = sorted(
                 match_similarity.items(), key=lambda v: v[1], reverse=True
             )
 
-            print(match_similarity)
-            print(sorted_similarities)
+            # print(match_similarity)
+            # print(sorted_similarities)
 
             # Remove embedding as it is not needed anymore
             d.pop('embedding')
@@ -81,8 +81,6 @@ class TextEncoder(Executor):
         with torch.inference_mode():
             # print(target.texts)                           #gave none when travesal_path set to c
             embeddings = self.model.encode(target.texts)
-            # print("For query itis:-")
-            # print(type(embeddings))
             # print(embeddings)
             # print(embeddings.shape)             # (1,384) for current model
             target.embeddings = embeddings

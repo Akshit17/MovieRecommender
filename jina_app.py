@@ -16,8 +16,8 @@ def gen_docarray():
         stored_data = pickle.load(fIn)
         stored_sentences = stored_data['sentences']
         stored_embeddings = stored_data['embeddings']
-        print(type(stored_embeddings[0]))
-        print(stored_embeddings[0])
+        # print(type(stored_embeddings[0]))
+        # print(stored_embeddings[0])
 
     with open("./data_finalize/movies_metadata.csv", encoding="utf-8") as file:      # Complete dataset taking too much time to get indexed
         reader = csv.DictReader(file)
@@ -34,7 +34,7 @@ def gen_docarray():
     docs.embeddings = stored_embeddings
     # d.plot('document.svg') for d in docs
     # print(type(docs.get_vocabulary()))
-    print(docs[0].json())
+    # print(docs[0].json())
     return docs
 
 
@@ -56,7 +56,7 @@ def query_results(docs):#, query):
     flow.plot('flow.svg')
 
     with flow:
-        flow.post(on='/index', inputs=docs, on_done=print)   #Uncomment this line to index the data (i.e if /workspace does not exist in your directory)
+        # flow.post(on='/index', inputs=docs, on_done=print)   #Uncomment this line to index the data (i.e if /workspace does not exist in your directory)
         flow.block()
 
 
