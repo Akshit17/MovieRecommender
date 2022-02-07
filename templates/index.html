@@ -30,10 +30,10 @@
     <center><div class="wrap" id="wrap">
       
       <form class="search" action="{{ url_for('main') }}"  method="POST">
-          <input type="text" class="searchTerm" id="autoComplete" autocomplete="off" name="movie_name" placeholder="Search">
-          <a href="#" class = "search-btn">
+          <input type="text" class="searchTerm" id="autoComplete" autocomplete="off" name="movie_name" >
+          <button class = "search-btn" type="submit" >
             <i class="fas fa-search"></i>
-          </a>
+          </button>
       </form>
         <br>
       </div>
@@ -48,14 +48,20 @@
    
     </div>
 
+    <div id="loader-3" class="text-center-3">
+      <h1>Upcoming Movies</h1>
+      <div id="upcoming-wrapper" class="upcoming-wrapper">
+  
+      </div>
+   
+    </div>
+
     <script src="https://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/js/EasePack.min.js"></script>
-    <!-- <script src="https://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/js/rAF.js"></script> -->
+    <script src="https://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/js/rAF.js"></script>
     <script src="https://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/js/TweenLite.min.js"></script>
     <script src="./static/background.js"></script>
    
 
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/js/autoComplete.min.js"></script> -->
-    <!-- <script type="text/javascript" src="{{url_for('static', filename='autocomplete.js')}}"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script src='https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js'></script>
@@ -63,6 +69,7 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.5.10/prop-types.min.js'></script>
 
     <script type="text/javascript" src="{{url_for('static', filename='fetch_movies.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='fetch_upcoming.js')}}"></script>
     
 </body>
 </html>
