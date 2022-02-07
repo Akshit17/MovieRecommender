@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <title>Movie Recommender</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/css/autoComplete.min.css">
+    {#<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/css/autoComplete.min.css"> -->#}
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style1.css') }}">
     <script type="text/javascript">
       var films = {{suggestions|tojson}};
@@ -25,25 +27,23 @@
         </h1>
      </header>
 
-    <center><div class="wrap" >
-      <div>
+    <center><div class="wrap" id="wrap">
+      
       <form class="search" action="{{ url_for('main') }}"  method="POST">
           <input type="text" class="searchTerm" id="autoComplete" autocomplete="off" name="movie_name" placeholder="Search">
-          <button class="searchButton" type="submit"  value="Submit">
-          </button>
+          <a href="#" class = "search-btn">
+            <i class="fas fa-search"></i>
+          </a>
       </form>
         <br>
-    </div></center>
+      </div>
+      </center>
 
+
+    <h1>Top Trending</h1>
     <div id="loader" class="text-center">
       <div id="wrapper" class="wrapper">
-           {#  <div class="card" id="image1">
-                  <div class="card__overlay"></div>
-                  <div class="card__content"><span class="card__title">{{movie_names[0]}}</span><br></div>
-                  <span class="card__number">01</span>
-                </div>  #}
-
-        
+  
       </div>
    
     </div>

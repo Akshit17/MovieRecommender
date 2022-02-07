@@ -9,6 +9,10 @@
 }
 
 * {
+
+  /* margin: 0%; */
+  padding: 0%;
+
   box-sizing: border-box;
 }
 
@@ -51,6 +55,76 @@ header h1 {
   left:800px;
  
 }
+
+
+
+
+
+center {
+  margin-top: 90px;
+}
+
+.searchTerm {
+  border: none;
+  background: none;
+  outline: none;
+  float: left;
+
+  color: #ffffff;
+  font-size: 21px;
+  font-weight: normal;
+  transition: 0.4s;
+  line-height: 60px;
+  width: 0px;
+
+}
+
+
+#wrap {
+  position: absolute;
+
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #172436;
+  height: 58px;
+  border-radius: 40px;
+  
+}
+
+#wrap:hover  .searchTerm{
+  width: 240px;
+  padding: 0 6px;
+}
+
+#wrap:hover > .search-btn{
+  background: white;
+  color: black;
+  
+}
+
+.search-btn {
+  color: #6ceef8;
+
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #172436;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.4s;
+  cursor: pointer;
+  text-decoration: none;
+  
+}
+.search-btn > i {
+  font-size: 20px;
+}
+
+  
+  
+
+
 
 #popular{
   font-family: 'Sucrose Bold Two';
@@ -181,97 +255,3 @@ img {
           justify-content: center;
 }
 
-.card {
-  width: 15rem;
-  height: 22rem;
-  margin: 2em;
-  background: #aaa;
-  background-size: cover;
-  background-position: center;
-  border-radius: .15em;
-  box-shadow: 0em 0em 1em rgba(0, 0, 0, 0.7);
-  position: relative;
-  color: #fff;
-  padding: 0em 3em 1.5em 3em;
-  overflow: hidden;
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-pack: start;
-          justify-content: start;
-  -webkit-box-align: end;
-          align-items: flex-end;
-  -webkit-transition: all 0.4s ease-in;
-  transition: all 0.4s ease-in;
-}
-.card:hover * {
-  cursor: pointer;
-}
-.card:hover .card__content {
-  font-size: 1rem;
-}
-.card:hover .card__number {
-  opacity: 1;
-  -webkit-transform: translateY(0em);
-          transform: translateY(0em);
-}
-.card:hover:before {
-  left: 0em;
-}
-.card:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -42em;
-  height: 100%;
-  width: 100%;
-  background: -webkit-gradient(linear, left top, right top, color-stop(46%, rgba(30, 80, 110, 0.6)), to(rgba(39, 90, 161, 0.6)));
-  background: linear-gradient(90deg, rgba(30, 80, 110, 0.6) 46%, rgba(39, 90, 161, 0.6) 100%);
-  z-index: 4;
-  -webkit-transition: all 0.4s ease-in-out;
-  transition: all 0.4s ease-in-out;
-}
-
-.card__overlay {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  background: rgba(33, 33, 33, 0.45);
-  z-index: 3;
-}
-
-.card__content {
-
-  position: relative;
-  font-size: 1rem;
-  z-index: 5;
-  -webkit-transition: all 0.3s 0.2s ease-in-out;
-  transition: all 0.3s 0.2s ease-in-out;
-}
-.card__content span,
-.card__content button {
-  font-family: 'Sucrose Bold Two';
-  src: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/sucrose.woff2") format("woff2");
-font-size: 28px;
-}
-
-.card__title {
-  font-size: 3em;
-
-}
-
-
-.card__number {
-  position: absolute;
-  top: -.09em;
-  right: .154em;
-  font-size: 6.13em;
-  font-weight: bold;
-  z-index: 7;
-  opacity: 0;
-  -webkit-transform: translateY(0.24em);
-          transform: translateY(0.24em);
-  -webkit-transition: all 0.4s ease-in-out;
-  transition: all 0.4s ease-in-out;
-}
