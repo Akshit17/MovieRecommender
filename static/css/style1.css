@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Montserrat&display=swap');
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
 
 @font-face {
   font-family: 'Sucrose Bold Two';
@@ -54,6 +57,64 @@ div#loader-3 {
   margin-right: 20px;
 }
 
+@media screen and (max-width: 910px) {
+  div#loader-3 {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    /* top: 4400px; */
+    top: 5900px;
+    margin-right: 20px;
+  }
+  
+}
+
+@media screen and (max-width: 1221.60px) and (min-width: 910px) {
+  div#loader-3 {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    /* top: 4400px; */
+    top: 4190px;
+    margin-right: 20px;
+  }
+  
+}
+
+@media screen and (max-width: 1532.30px)
+and (min-width: 1222px) {
+  div#loader-3 {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    /* top: 4400px; */
+    top: 2980px;
+    margin-right: 20px;
+  }
+  
+}
+
+@media screen and (min-width: 1533px) {
+  div#loader-3 {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    /* top: 4400px; */
+    top: 2360px;
+    margin-right: 20px;
+  }
+  
+}
+
+
 
 .large-header > h1{
   font-family: 'Sucrose Bold Two', sans-serif;
@@ -90,6 +151,7 @@ header {
 
 .large-header > header h1 {
 
+  font-family: 'Montserrat';
   font-size: 3vw;
   line-height: .8;
   top: 20px;
@@ -97,7 +159,7 @@ header {
   color:white;
   left:800px;
   text-shadow: 0 0 5px rgb(0 0 0 / 50%);
- 
+  font-weight: 100;
 }
 
 
@@ -179,9 +241,12 @@ center {
   color:white;
 }
 header h1 span {
+  font-family: 'Montserrat';
   display: block;
-  font-size: 3.75vw;
+  font-size: 3.35vw;
   text-align: center;
+  font-weight: 100;
+  margin-top: 10px;
 }
 #autoComplete {
   background-position: 100% ;
@@ -300,3 +365,176 @@ img {
           justify-content: center;
 }
 
+
+
+
+
+@media only screen   
+and (min-device-width : 320px)   
+and (max-device-width : 480px)  
+{
+  .social-link{
+    display: inline-flex;
+    position: relative;
+    left: 1400px;
+    top: 90px;
+    z-index: 100;
+  }
+
+}
+
+@media only screen   
+and (min-device-width : 360px)   
+and (max-device-width : 640px)  
+{
+  .social-link{
+    display: inline-flex;
+    position: relative;
+    left: 630px;
+    top: 90px;
+    z-index: 100;
+  }
+
+}
+
+
+@media only screen   
+and (min-device-width : 768px)   
+and (max-device-width : 1024px)   {
+    .social-link{
+      display: inline-flex;
+      position: relative;
+      left: 680px;
+      top: 90px;
+      z-index: 100;
+    }
+  }
+
+@media only screen   
+and (min-width: 1030px)   
+and (max-width: 1366px)  {
+  .social-link{
+    display: inline-flex;
+    position: relative;
+    left: 900px;
+    top: 90px;
+    z-index: 100;
+  } 
+}
+
+
+@media only screen   
+and (min-width: 1370px)  
+and (max-width: 1605px)    {
+  .social-link{
+    display: inline-flex;
+    position: relative;
+    left: 1050px;
+    top: 90px;
+    z-index: 100;
+  } 
+}
+
+
+
+
+
+/* .social-link{
+  display: inline-flex;
+  position: relative;
+  left: 1400px;
+  top: 90px;
+  z-index: 100;
+} */
+
+.social-link .button{
+  display: inline-block;
+  height: 60px;
+  width: 60px;
+  float: left;
+  margin: 0 5px;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0px 10px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s ease-out;
+}
+.social-link .button:hover{
+  width: 200px;
+}
+.social-link .button .icon{
+  display: inline-block;
+  height: 60px;
+  width: 60px;
+  text-align: center;
+  border-radius: 50px;
+  box-sizing: border-box;
+  line-height: 60px;
+  transition: all 0.3s ease-out;
+}
+.social-link .button:nth-child(1):hover .icon{
+  background: #E1306C; 
+}
+.social-link .button:nth-child(2):hover .icon{
+  background: #171718;
+}
+.social-link .button:nth-child(3):hover .icon{
+  background: #1DA1F2;
+}
+.social-link .button .icon i{
+  font-size: 25px;
+  line-height: 60px;
+  transition: all 0.3s ease-out;
+}
+.social-link .button:hover .icon i{
+  color: #fff;
+}
+i.fab.fa-github {
+  color: black;
+}
+i.fab.fa-linkedin {
+  color: #1DA1F2;
+}
+i.fab.fa-instagram {
+  color: #E1306C;
+}
+
+.social-link .button span{
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 60px;
+  margin-left: 10px;
+  transition: all 0.3s ease-out;
+}
+.social-link .button:nth-child(1) span{
+  color: #E1306C;
+}
+.social-link .button:nth-child(2) span{
+  color: #171718;
+}
+.social-link .button:nth-child(3) span{
+  color: #1DA1F2;
+}
+
+a:link { text-decoration: none; }
+
+
+
+
+@media screen 
+  and (device-width: 360px) 
+  and (device-height: 640px) 
+  and (-webkit-device-pixel-ratio: 2) 
+  {
+        div#loader-3 {
+          position: absolute;
+          margin: auto;
+          left: 0;
+          right: 0;
+          margin-left: auto;
+          /* top: 4400px; */
+          top: 3830px;
+          margin-right: 20px;
+    }
+  }
