@@ -40,7 +40,7 @@ class SimpleIndexer(Executor):
             match_similarity = defaultdict(float)
 
             # For each match
-            print("Type of d.matches is {} ".format(d.matches))
+            # print("Type of d.matches is {} ".format(d.matches))
             for m in d.matches:
                 # Get cosine similarity
 
