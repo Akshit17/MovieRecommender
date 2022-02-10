@@ -9,13 +9,14 @@
     function initHeader() {
         width = window.innerWidth;
         height = window.innerHeight;
+        // height = window.outerHeight;
         target = {x: width/2, y: height/2};
 
         largeHeader = document.getElementById('large-header');
         largeHeader.style.height = height+'px';
 
         canvas = document.getElementById('demo-canvas');
-        canvas.width = width;
+        canvas.width = width - 120;
         canvas.height = height;
         ctx = canvas.getContext('2d');
 
@@ -36,9 +37,7 @@
             var p1 = points[i];
             for(var j = 0; j < points.length; j++) {
                 var p2 = points[j]
-                // if(!(p1 == p2)) {
-                //     var placed = false;
-                //     for(var k = 0; k < 10; k++) {
+        
                 if(!(p1 == p2)) {
                     var placed = false;
                     for(var k = 0; k < 5; k++) {
@@ -50,7 +49,6 @@
                         }
                     }
 
-                    // for(var k = 0; k < 10; k++) {
 
                     for(var k = 0; k < 5; k++) {
                         if(!placed) {
@@ -104,7 +102,7 @@
         width = window.innerWidth;
         height = window.innerHeight;
 
-        largeHeader.style.height = height+'px';
+        // largeHeader.style.height = height+'px';
 
         canvas.width = width;
         canvas.height = height;
@@ -160,7 +158,6 @@
             ctx.strokeStyle = 'rgba(156,217,249,'+ p.active+')';
             // ctx.strokeStyle = 'rgba(211,117,149,'+ p.active+')';
             ctx.stroke();
-            // rgba(156,217,249);
         }
     }
 
