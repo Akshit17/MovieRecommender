@@ -3,34 +3,102 @@
 <head>
   <meta charset="UTF-8">
   <title>Movie Recommender</title>
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/css/autoComplete.min.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    {#<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/css/autoComplete.min.css"> -->#}
     
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style1.css') }}">
-    <!-- <script type="text/javascript">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style1.css') }}">
+    <script type="text/javascript">
       var films = {{suggestions|tojson}};
-    </script> -->
+    </script>
 
 </head>
 
 
 <body>
-  <header>
-  <h1>Movie <span>Recommender</h1>
-  </header>
+ 
 
-  <center><div class="wrap" >
-    <div>
-    <form class="search" action="{{ url_for('main') }}"  method="POST">
-        <input type="text" class="searchTerm" id="autoComplete" autocomplete="off" name="movie_name" placeholder="Enter a full movie name">
-        <button class="searchButton" type="submit"  value="Submit">
-        </button>
-    </form>
-      <br>
-  </div></center>
+  <div id="large-header" class="large-header">
+
+  <div class="social-link" id="social-link">
+ 
+   <a class="button" href="https://www.instagram.com/_akited_/" target="_blank">
+      <div class="icon">
+         <i class="fab fa-instagram"></i>
+      </div>
+      <span>_akited_</span>
+     </a>
+
+   <a class="button" href="https://github.com/Akshit17" target="_blank">
+      <div class="icon">
+         <i class="fab fa-github"></i>
+      </div>
+      <span>Akshit17</span>
+     </a>
+
+   <a class="button" href="https://www.linkedin.com/in/akshit-choudhari-3132b6201/" target="_blank">
+      <div class="icon">
+         <i class="fab fa-linkedin"></i>
+      </div>
+      <span>Akshit</span>
+     </a>
+     </div>
 
 
-  
-  
+    <canvas id="demo-canvas" width="1081" height="937"></canvas>
+    <header>
+      <h1>MOVIE 
+        <span>RECOMMENDER</span>
+        </h1>
+     </header>
+
+    <center><div class="wrap" id="wrap">
+      
+      <form class="search" action="{{ url_for('main') }}"  method="POST">
+          <input type="text" class="searchTerm" id="autoComplete" autocomplete="off" name="movie_name" >
+          <button class = "search-btn" type="submit" >
+            <i class="fas fa-search"></i>
+          </button>
+      </form>
+        <br>
+      </div>
+      </center>
+
+
+      <h1>Top Trending</h1>
+      <div id="loader" class="text-center">
+        <div id="wrapper" class="wrapper">
+    
+        </div>
+    
+      </div>
+
+      <div id="loader-3" class="text-center-3">
+        <h1>Upcoming Movies</h1>
+        <div id="upcoming-wrapper" class="upcoming-wrapper">
+    
+        </div>
+   
+    </div>
+
+    </div>
+    </body>
+
+    <script src="https://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/js/EasePack.min.js"></script>
+    <script src="https://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/js/rAF.js"></script>
+    <script src="https://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/js/TweenLite.min.js"></script>
+    <script src="./static/background.js"></script>
+   
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.5.10/prop-types.min.js'></script>
+
+    <script type="text/javascript" src="{{url_for('static', filename='fetch_movies.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='fetch_upcoming.js')}}"></script>
+    
 </body>
 </html>

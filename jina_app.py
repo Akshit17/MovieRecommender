@@ -16,8 +16,7 @@ def gen_docarray():
         stored_data = pickle.load(fIn)
         stored_sentences = stored_data['sentences']
         stored_embeddings = stored_data['embeddings']
-        print(type(stored_embeddings[0]))
-        print(stored_embeddings[0])
+      
 
     with open("./data_finalize/movies_metadata.csv", encoding="utf-8") as file:      # Complete dataset taking too much time to get indexed
         reader = csv.DictReader(file)
@@ -26,19 +25,16 @@ def gen_docarray():
         for indx, row in enumerate(reader):
             # print(row.keys())
             movies.append(row['overview'])
-            da = Document(text=row['overview']) #tags=ast.literal_eval(row['cast'])
+            da = Document(text=row['overview']) 
             da.tags['genres'] = ast.literal_eval(row['genres'])
             da.tags['title'] = row['title']
-            # da.embeddings = stored_embeddings[indx]
             docs.append(da)
     docs.embeddings = stored_embeddings
-    # d.plot('document.svg') for d in docs
-    # print(type(docs.get_vocabulary()))
-    print(docs[0].json())
+  
     return docs
 
 
-def query_results(docs):#, query):
+def query_results(docs):#, query):          #Uncomment if you wish to give queries from terminal instead of Web-app
     flow = (
         Flow(cors=True, protocol='http', port_expose=34567)
         .add(
@@ -56,7 +52,7 @@ def query_results(docs):#, query):
     flow.plot('flow.svg')
 
     with flow:
-        flow.post(on='/index', inputs=docs, on_done=print)
+        # flow.post(on='/index', inputs=docs, on_done=print)   #Uncomment this line to index the data (i.e if /workspace does not exist in your directory)
         flow.block()
 
 
